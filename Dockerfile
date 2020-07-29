@@ -1,6 +1,6 @@
-FROM node:13.8 as node
+FROM node:13.8 AS node
 
-FROM php:7.4-apache
+FROM php:7.4-apache AS production
 
 # Copy nodejs from node image
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
@@ -10,6 +10,7 @@ COPY --from=node /usr/local/bin /usr/local/bin
 
 # Custom Vhost
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD docker-php-dev-environment.sh /usr/local/bin/
 
 RUN set -xe \
     #
@@ -30,9 +31,6 @@ RUN set -xe \
     # PHP Configuration
     #
     && docker-php-ext-install -j$(nproc) iconv mbstring intl pdo_pgsql pdo_mysql gd zip bcmath soap sockets opcache \
-    # Disable opcache by default
-    && sed -r 's/^(.{1,})/#\1/' < /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini > /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini.new \
-    && mv /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini.new /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
     # Cleanup
     && docker-php-source delete \
     && echo "Installing composer" \
@@ -60,3 +58,9 @@ EXPOSE 80
 # Labelling strategy on child containers build
 ONBUILD ARG FORLABS_IMAGE_CONTEXT='production'
 ONBUILD LABEL fr.forlabs.image_context="${FORLABS_IMAGE_CONTEXT}"
+
+# Final step to create symfony development image
+FROM production AS development
+
+# Disable opcache by default
+RUN bash /usr/local/bin/docker-php-dev-environment.sh
