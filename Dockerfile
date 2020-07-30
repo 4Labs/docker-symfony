@@ -12,13 +12,15 @@ COPY --from=node /usr/local/bin /usr/local/bin
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD docker-php-dev-environment.sh /usr/local/bin/
 
+ENV PHP_BUILD_DEPS="autoconf gcc g++ libpq-dev linux-headers-amd64 make libmcrypt-dev libicu-dev libpq-dev libxml2-dev build-essential libpng-dev libjpeg-dev libonig-dev libzip-dev libfreetype6-dev libmagickwand-dev"
+
 RUN set -xe \
     #
     # Install PHP dependencies
     #
     && apt-get update \
-    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano \
-    && apt-get install -y autoconf build-essential libpq-dev binutils-gold libgcc1 linux-headers-amd64 make python libpng-dev libjpeg-dev libc-dev libfreetype6-dev libmcrypt-dev libicu-dev sqlite3-pcre libxml2-dev libonig-dev libzip-dev imagemagick libtool libmagickwand-dev \
+    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre imagemagick libtool \
+    && apt-get install -y ${PHP_BUILD_DEPS} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     #
     # Install Xdebug and Imagick
@@ -50,7 +52,7 @@ RUN set -xe \
     #
     # Build dependencies cleanup
     #
-    && apt-get remove -y autoconf gcc g++ libpq-dev linux-headers-amd64 make libmcrypt-dev libicu-dev libpq-dev libxml2-dev build-essential \
+    && apt-get remove -y ${PHP_BUILD_DEPS} \
     && apt-get clean
 
 EXPOSE 80
