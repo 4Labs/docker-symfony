@@ -1,5 +1,7 @@
- Forlabs Base Symfony 4 image
+ Forlabs Base Symfony image
 ===============================================================================
+
+Image source on Github: https://github.com/4Labs/docker-symfony
 
 Base symfony 4+ engine including composer and common php modules.
 

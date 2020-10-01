@@ -61,6 +61,9 @@ EXPOSE 80
 ONBUILD ARG FORLABS_IMAGE_CONTEXT='production'
 ONBUILD LABEL fr.forlabs.image_context="${FORLABS_IMAGE_CONTEXT}"
 
+# PHP sessions are stored in /tmp
+VOLUME /tmp
+
 # Final step to create symfony development image
 FROM production AS development
 
