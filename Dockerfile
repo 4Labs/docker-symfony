@@ -35,9 +35,9 @@ RUN set -xe \
     && docker-php-source delete \
     && echo "Installing composer" \
     #
-    # Install composer
+    # Install latest composer 1
     #
-    && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer \
+    && curl https://getcomposer.org/composer-1.phar > /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer \
     #
     # Install webpack-encore
