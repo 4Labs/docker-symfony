@@ -40,6 +40,11 @@ RUN set -xe \
     && curl https://getcomposer.org/composer-1.phar > /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer \
     #
+    # Install latest composer 2
+    #
+    && curl https://getcomposer.org/composer-2.phar > /usr/local/bin/composer2 \
+    && chmod +x /usr/local/bin/composer2 \
+    #
     # Install webpack-encore
     #
     && npm install -g @symfony/webpack-encore \
@@ -51,6 +56,7 @@ RUN set -xe \
     # Build dependencies cleanup
     #
     && apt-get remove -y autoconf gcc g++ libpq-dev linux-headers-amd64 make libmcrypt-dev libicu-dev libpq-dev libxml2-dev build-essential \
+    && apt-get autoremove -y \
     && apt-get clean
 
 EXPOSE 80
