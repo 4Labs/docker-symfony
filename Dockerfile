@@ -56,7 +56,6 @@ RUN set -xe \
     # Build dependencies cleanup
     #
     && apt-get remove -y autoconf gcc g++ libpq-dev linux-headers-amd64 make libmcrypt-dev libicu-dev libpq-dev libxml2-dev build-essential \
-    && apt-get autoremove -y \
     && apt-get clean
 
 EXPOSE 80
