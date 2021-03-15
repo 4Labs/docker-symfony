@@ -2,6 +2,8 @@ FROM node:9.3 as node
 
 FROM php:7.2-apache
 
+ENV TZ=Europe/Paris
+
 # Copy nodejs from node image
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 COPY --from=node /opt/yarn /opt/yarn
