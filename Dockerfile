@@ -1,6 +1,6 @@
 FROM node:13.8 AS node
 
-FROM php:7.4-apache AS production
+FROM php:8.0-apache AS production
 
 # Copy nodejs from node image
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
@@ -19,7 +19,7 @@ RUN set -xe \
     # Install PHP dependencies
     #
     && apt-get update \
-    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre imagemagick libtool \
+    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool \
     && apt-get install -y ${PHP_BUILD_DEPS} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     #
@@ -27,8 +27,6 @@ RUN set -xe \
     #
     && pecl install xdebug \
     && pecl list-files xdebug |grep src |cut -d ' ' -f 3 > /usr/local/etc/php/conf.d/xdebug.ini \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
     #
     # PHP Configuration
     #
@@ -39,13 +37,13 @@ RUN set -xe \
     #
     # Install latest composer 1
     #
-    && curl https://getcomposer.org/composer-1.phar > /usr/local/bin/composer \
-    && chmod +x /usr/local/bin/composer \
+    && curl https://getcomposer.org/composer-1.phar > /usr/local/bin/composer1 \
+    && chmod +x /usr/local/bin/composer1 \
     #
     # Install latest composer 2
     #
-    && curl https://getcomposer.org/composer-2.phar > /usr/local/bin/composer2 \
-    && chmod +x /usr/local/bin/composer2 \
+    && curl https://getcomposer.org/composer-2.phar > /usr/local/bin/composer \
+    && chmod +x /usr/local/bin/composer \
     #
     # Install webpack-encore
     #
