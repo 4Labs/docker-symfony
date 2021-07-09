@@ -16,10 +16,10 @@ ENV PHP_BUILD_DEPS="autoconf gcc g++ libpq-dev linux-headers-amd64 make libmcryp
 
 RUN set -xe \
     #
-    # Install PHP dependencies
+    # Install tools and PHP dependencies
     #
     && apt-get update \
-    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool \
+    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool supervisor rsyslog \
     && apt-get install -y ${PHP_BUILD_DEPS} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     #
