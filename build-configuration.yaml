@@ -1,4 +1,4 @@
-    # Specific build branch configuration
+# Specific build branch configuration
 branches:
   master:
     - stage: ~
@@ -11,7 +11,7 @@ tags:
     - stage:  production # Stage can be null
       tag: '${tag}' # tag is necessary for docker image tag
     - stage: development
-        tag: '${tag}-dev'
+      tag: '${tag}-dev'
   # specific tag behaviors
   4:
     - stage: ~
