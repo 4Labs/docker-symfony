@@ -1,0 +1,30 @@
+    # Specific build branch configuration
+branches:
+  master:
+    - stage: ~
+      tag: latest
+
+# Tag discovery and build; set to null to disable tag discovery
+tags:
+  # default behavior, will be used for every discovered tag
+  _:
+    - stage:  production # Stage can be null
+      tag: '${tag}' # tag is necessary for docker image tag
+    - stage: development
+        tag: '${tag}-dev'
+  # specific tag behaviors
+  4:
+    - stage: ~
+      tag: '${tag}'
+  4.0.0:
+    - stage: ~
+      tag: '${tag}'
+  4.0.1:
+    - stage: ~
+      tag: '${tag}'
+  5.0.0:
+    - stage: ~
+      tag: '${tag}'
+  5.0.1:
+    - stage: ~
+      tag: '${tag}'
