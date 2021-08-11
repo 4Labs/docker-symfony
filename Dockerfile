@@ -1,6 +1,6 @@
 FROM node:13.8 AS node
 
-FROM php:8.0.2-apache AS production
+FROM php:8.0.9-apache AS production
 
 # Copy nodejs from node image
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
