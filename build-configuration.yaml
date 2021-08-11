@@ -28,3 +28,6 @@ tags:
   5.0.1:
     - stage: ~
       tag: '${tag}'
+  5.0.2:
+    - stage: ~
+      tag: '${tag}'
