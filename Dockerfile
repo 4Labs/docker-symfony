@@ -17,11 +17,13 @@ ENV PHP_BUILD_DEPS="autoconf gcc g++ libpq-dev linux-headers-amd64 make libmcryp
 RUN set -xe \
     #
     # Install tools and PHP dependencies
+    # "--allow-releaseinfo-change" auto-accepts the warning "Repository changed its 'Suite' value from stable to oldstable" which prevents auto-update after a new debian version is released
     #
-    && apt-get update \
+    && apt-get update --allow-releaseinfo-change \
     && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool supervisor rsyslog \
     && apt-get install -y ${PHP_BUILD_DEPS} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure exif \
     #
     # Install Xdebug and Imagick
     #
@@ -30,7 +32,7 @@ RUN set -xe \
     #
     # PHP Configuration
     #
-    && docker-php-ext-install -j$(nproc) iconv mbstring intl pdo_pgsql pdo_mysql gd zip bcmath soap sockets opcache \
+    && docker-php-ext-install -j$(nproc) iconv mbstring intl pdo_pgsql pdo_mysql gd zip bcmath soap sockets opcache sysvsem exif \
     # Cleanup
     && docker-php-source delete \
     && echo "Installing composer" \
