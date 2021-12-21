@@ -20,9 +20,10 @@ RUN set -xe \
     # "--allow-releaseinfo-change" auto-accepts the warning "Repository changed its 'Suite' value from stable to oldstable" which prevents auto-update after a new debian version is released
     #
     && apt-get update --allow-releaseinfo-change \
-    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool supervisor rsyslog \
+    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool supervisor rsyslog exiftool \
     && apt-get install -y ${PHP_BUILD_DEPS} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure sysvsem  \
     && docker-php-ext-configure exif \
     #
     # Install Xdebug and Imagick
