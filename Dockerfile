@@ -20,7 +20,7 @@ RUN set -xe \
     # "--allow-releaseinfo-change" auto-accepts the warning "Repository changed its 'Suite' value from stable to oldstable" which prevents auto-update after a new debian version is released
     #
     && apt-get update --allow-releaseinfo-change \
-    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool supervisor rsyslog exiftool \
+    && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano binutils-gold libgcc1 python libc-dev sqlite3-pcre libtool supervisor rsyslog exiftool libapache2-mod-xsendfile cron \
     && apt-get install -y ${PHP_BUILD_DEPS} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-configure sysvsem  \
@@ -52,16 +52,15 @@ RUN set -xe \
     #
     && npm install -g @symfony/webpack-encore \
     #
-    # Enable httpd mod_rewrite, mod_headers, mod_expires, mod_xsend
+    # Enable httpd mod_rewrite, mod_headers, mod_expires, mod_xsend (?), mod_xsendfile
     #
-    && a2enmod rewrite headers expires xsend \
+    && a2enmod rewrite headers expires xsendfile \
     #
     # Build dependencies cleanup
     #
+    && rm -rf /usr/src \
     && apt-get remove -y ${PHP_BUILD_DEPS} \
     && apt-get clean
-
-EXPOSE 80
 
 # Labelling strategy on child containers build
 ONBUILD ARG FORLABS_IMAGE_CONTEXT='production'
